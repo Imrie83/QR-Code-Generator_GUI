@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
 import qrcode
-from PIL import ImageTk, Image
+from PIL import Image, ImageTk
 
 root = Tk()
 root.geometry("450x500")
@@ -25,12 +25,13 @@ def submit():
     link = "qrcodes\\" + link + '.png'
     img.save(link)
     gen_result['text'] = "Files Saved as: " + link
-    new_img =ImageTK.PhotoImage(Image.open(link))
-    img_label.configure(image=new_img)
-    img_label.image = new_img
 
-
-
+    img_size = (275, 275)
+    img_display = ImageTk.PhotoImage(Image.open(link).resize(img_size))
+    img_label = Label(frame, image=img_display)
+    img_label.image = img_display
+    img_label.grid(row=10, column=0, columnspan=2)
+    link_var.set("")
 
 frame = Frame(root).grid()
 
@@ -40,16 +41,10 @@ entry_label.grid(row=0, column=0, padx=10, pady=10)
 link_entry = Entry(frame, width=50, textvariable=link_var)
 link_entry.grid(row=0, column=1, padx=10, pady=10)
 
-btn = Button(frame, text="Get QR", command=submit)
-btn.grid(row=1, column=0, padx=10, pady=10, sticky=E, columnspan=2)
+# btn = Button(frame, text="Get QR", command=submit)
+# btn.grid(row=1, column=1, padx=10, pady=10, sticky=E)
 
-img_display = ImageTK.PhotoImage(Image.open())
-img_label = Label(frame, image=img_display)
-img_label.grid(row=4, column=0, columnspan=2)
-link_var.set("")
-
-
-gen_result = Label(frame, text=link)
-gen_result.grid(row=5, column=0, padx=10, pady=10, columnspan=2)
+gen_result = Label(frame, text=link, width=50)
+gen_result.grid(row=1, column=0, padx=10, pady=10)
 
 root.mainloop()
